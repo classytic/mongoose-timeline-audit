@@ -1,0 +1,52 @@
+# Test files
+*.test.js
+*.spec.js
+test/
+tests/
+__tests__/
+**/__tests__/
+
+# Documentation (GitHub only)
+docs/
+examples/
+*.md
+!README.md
+
+# Development files
+.github/
+.vscode/
+.idea/
+.editorconfig
+.eslintrc*
+.prettierrc*
+*.log
+.DS_Store
+.env
+.env.*
+tsconfig.json
+jsconfig.json
+*.swp
+*.swo
+*~
+
+# Source control
+.git
+.gitignore
+.gitattributes
+
+# Build/CI artifacts
+*.tgz
+node_modules/
+coverage/
+.nyc_output/
+dist/
+build/
+.npmrc
+
+# OS files
+Thumbs.db
+
+# Package manager lock files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml

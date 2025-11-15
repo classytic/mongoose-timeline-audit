@@ -1,0 +1,65 @@
+{
+  "name": "mongoose-timeline-audit",
+  "version": "1.0.0",
+  "description": "Mongoose plugin for comprehensive timeline and audit trail tracking with actor resolution and auto-trimming",
+  "type": "module",
+  "main": "./index.js",
+  "exports": {
+    ".": {
+      "import": "./index.js"
+    },
+    "./plugin": "./src/plugin.js",
+    "./config": "./src/config.js",
+    "./event-types": "./src/event-types.js",
+    "./context-helpers": "./src/context-helpers.js"
+  },
+  "files": [
+    "index.js",
+    "src/**/*.js",
+    "!src/**/*.test.js",
+    "!src/**/*.spec.js",
+    "!src/**/__tests__/**",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "mongoose",
+    "plugin",
+    "timeline",
+    "audit",
+    "audit-trail",
+    "audit-log",
+    "actor-tracking",
+    "mongodb",
+    "history",
+    "event-tracking",
+    "activity-log",
+    "event-sourcing",
+    "multi-tenant",
+    "compliance",
+    "nodejs"
+  ],
+  "author": "Sadman Chowdhury",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/siam923/mongoose-timeline-audit.git"
+  },
+  "bugs": {
+    "url": "https://github.com/siam923/mongoose-timeline-audit/issues"
+  },
+  "homepage": "https://github.com/siam923/mongoose-timeline-audit#readme",
+  "peerDependencies": {
+    "mongoose": "^8.0.0"
+  },
+  "devDependencies": {
+    "mongoose": "^8.19.4"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.js",
+    "test:watch": "node --test --watch test/*.test.js"
+  }
+}
