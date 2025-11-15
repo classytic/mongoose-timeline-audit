@@ -26,6 +26,17 @@ import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
 /**
+ * Common actor roles (for convenience, you can use custom roles too)
+ */
+export const ACTOR_ROLES = {
+  CUSTOMER: 'customer',
+  ADMIN: 'admin',
+  SUPERADMIN: 'superadmin',
+  GUEST: 'guest',
+  SYSTEM: 'system',
+};
+
+/**
  * Default configuration
  */
 const DEFAULT_CONFIG = {

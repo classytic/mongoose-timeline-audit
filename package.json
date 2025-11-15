@@ -4,8 +4,10 @@
   "description": "Mongoose plugin for comprehensive timeline and audit trail tracking with actor resolution and auto-trimming",
   "type": "module",
   "main": "./index.js",
+  "types": "./mongoose-timeline-audit.d.ts",
   "exports": {
     ".": {
+      "types": "./mongoose-timeline-audit.d.ts",
       "import": "./index.js"
     },
     "./plugin": "./src/plugin.js",
@@ -19,6 +21,7 @@
     "!src/**/*.test.js",
     "!src/**/*.spec.js",
     "!src/**/__tests__/**",
+    "mongoose-timeline-audit.d.ts",
     "README.md",
     "LICENSE"
   ],
@@ -37,6 +40,7 @@
     "event-sourcing",
     "multi-tenant",
     "compliance",
+    "typescript",
     "nodejs"
   ],
   "author": "Sadman Chowdhury",

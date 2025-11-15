@@ -8,7 +8,7 @@
  * @license MIT
  */
 
-import timelineAuditPlugin, { resolveActor, getActorDescription } from './src/plugin.js';
+import timelineAuditPlugin, { resolveActor, getActorDescription, ACTOR_ROLES } from './src/plugin.js';
 import {
   STANDARD_EVENT_LIMITS,
   MODEL_SPECIFIC_LIMITS,
@@ -46,6 +46,7 @@ export {
   // Plugin utilities
   resolveActor,
   getActorDescription,
+  ACTOR_ROLES,
 
   // Configuration
   STANDARD_EVENT_LIMITS,
