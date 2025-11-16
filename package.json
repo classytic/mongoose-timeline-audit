@@ -1,6 +1,6 @@
 {
   "name": "mongoose-timeline-audit",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Mongoose plugin for comprehensive timeline and audit trail tracking with actor resolution and auto-trimming",
   "type": "module",
   "main": "./index.js",
