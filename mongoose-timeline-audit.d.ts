@@ -212,10 +212,10 @@ export const USER_EVENTS: {
 export const ACCESS_EVENTS: {
   GRANTED: 'access.granted';
   REVOKED: 'access.revoked';
-  REQUESTED: 'access.requested';
-  DENIED: 'access.denied';
-  EXPIRED: 'access.expired';
-  PERMISSION_CHANGED: 'access.permission.changed';
+  PERMISSION_ADDED: 'access.permission.added';
+  PERMISSION_REMOVED: 'access.permission.removed';
+  ROLE_ASSIGNED: 'access.role.assigned';
+  ROLE_REMOVED: 'access.role.removed';
 };
 
 /** Data Events */
@@ -224,8 +224,11 @@ export const DATA_EVENTS: {
   UPDATED: 'data.updated';
   DELETED: 'data.deleted';
   RESTORED: 'data.restored';
+  ARCHIVED: 'data.archived';
   EXPORTED: 'data.exported';
   IMPORTED: 'data.imported';
+  BULK_UPDATED: 'data.bulk_updated';
+  BULK_DELETED: 'data.bulk_deleted';
 };
 
 /** Payment Events */
@@ -234,58 +237,74 @@ export const PAYMENT_EVENTS: {
   COMPLETED: 'payment.completed';
   FAILED: 'payment.failed';
   REFUNDED: 'payment.refunded';
+  PARTIALLY_REFUNDED: 'payment.partially_refunded';
   DISPUTED: 'payment.disputed';
-  METHOD_UPDATED: 'payment.method.updated';
+  VERIFIED: 'payment.verified';
 };
 
 /** Subscription Events */
 export const SUBSCRIPTION_EVENTS: {
   CREATED: 'subscription.created';
+  ACTIVATED: 'subscription.activated';
   RENEWED: 'subscription.renewed';
   CANCELLED: 'subscription.cancelled';
   PAUSED: 'subscription.paused';
   RESUMED: 'subscription.resumed';
+  EXPIRED: 'subscription.expired';
   UPGRADED: 'subscription.upgraded';
   DOWNGRADED: 'subscription.downgraded';
-  EXPIRED: 'subscription.expired';
+  RENEWAL_FAILED: 'subscription.renewal_failed';
 };
 
 /** Order Events */
 export const ORDER_EVENTS: {
   CREATED: 'order.created';
   UPDATED: 'order.updated';
+  CONFIRMED: 'order.confirmed';
+  PROCESSING: 'order.processing';
+  SHIPPED: 'order.shipped';
+  DELIVERED: 'order.delivered';
   CANCELLED: 'order.cancelled';
+  REFUNDED: 'order.refunded';
+  FULFILLED: 'order.fulfilled';
   PAUSED: 'order.paused';
   RESUMED: 'order.resumed';
-  FULFILLED: 'order.fulfilled';
-  REFUNDED: 'order.refunded';
 };
 
 /** Enrollment Events */
 export const ENROLLMENT_EVENTS: {
   CREATED: 'enrollment.created';
-  UPDATED: 'enrollment.updated';
-  CANCELLED: 'enrollment.cancelled';
+  STARTED: 'enrollment.started';
   PAUSED: 'enrollment.paused';
   RESUMED: 'enrollment.resumed';
   COMPLETED: 'enrollment.completed';
+  CANCELLED: 'enrollment.cancelled';
+  LESSON_COMPLETED: 'enrollment.lesson.completed';
+  QUIZ_COMPLETED: 'enrollment.quiz.completed';
+  CERTIFICATE_ISSUED: 'enrollment.certificate.issued';
 };
 
 /** Admin Events */
 export const ADMIN_EVENTS: {
   CONFIG_CHANGED: 'admin.config.changed';
-  USER_IMPERSONATED: 'admin.user.impersonated';
-  BULK_ACTION: 'admin.bulk.action';
+  FEATURE_ENABLED: 'admin.feature.enabled';
+  FEATURE_DISABLED: 'admin.feature.disabled';
+  MAINTENANCE_STARTED: 'admin.maintenance.started';
+  MAINTENANCE_ENDED: 'admin.maintenance.ended';
   BACKUP_CREATED: 'admin.backup.created';
-  RESTORE_PERFORMED: 'admin.restore.performed';
+  BACKUP_RESTORED: 'admin.backup.restored';
+  USER_IMPERSONATED: 'admin.user.impersonated';
 };
 
 /** System Events */
 export const SYSTEM_EVENTS: {
   CRON_EXECUTED: 'system.cron.executed';
-  MIGRATION_RAN: 'system.migration.ran';
-  NOTIFICATION_SENT: 'system.notification.sent';
+  JOB_STARTED: 'system.job.started';
+  JOB_COMPLETED: 'system.job.completed';
+  JOB_FAILED: 'system.job.failed';
   EMAIL_SENT: 'system.email.sent';
+  SMS_SENT: 'system.sms.sent';
+  NOTIFICATION_SENT: 'system.notification.sent';
   WEBHOOK_TRIGGERED: 'system.webhook.triggered';
 };
 
@@ -294,9 +313,8 @@ export const ALL_EVENTS: Record<string, string>;
 
 /**
  * Get suggested event limits for event types
- * @param events Array of event types or event object
  */
-export function getSuggestedEventLimits(events?: string[] | Record<string, string>): Record<string, number | null>;
+export function getSuggestedEventLimits(): Record<string, number | null>;
 
 // ============ CONTEXT HELPERS ============
 
@@ -314,26 +332,32 @@ export function buildRequestContext(request: any): {
  * @param request Request object
  * @param geo Geo-location data
  */
-export function buildGeoContext(request: any, geo: any): any;
+export function buildGeoContext(request: any, geo?: any): any;
 
 /**
- * Build device context from user agent
- * @param userAgent User agent string
- * @param additionalDeviceInfo Additional device information
+ * Build device context from request
+ * @param request Request object
+ * @param device Device information
  */
-export function buildDeviceContext(userAgent: string, additionalDeviceInfo?: any): any;
+export function buildDeviceContext(request: any, device?: any): any;
 
 /**
  * Build security context
- * @param securityData Security-related data
+ * @param request Request object
+ * @param options Additional options (geo, device, sessionId, requestId)
  */
-export function buildSecurityContext(securityData: any): any;
+export function buildSecurityContext(request: any, options?: {
+  geo?: any;
+  device?: any;
+  sessionId?: string;
+  requestId?: string;
+}): any;
 
 /**
- * Build custom context by merging multiple context objects
- * @param contexts Context objects to merge
+ * Build custom context
+ * @param data Any custom data to store
  */
-export function buildCustomContext(...contexts: any[]): any;
+export function buildCustomContext(data: any): any;
 
 // ============ MODULE AUGMENTATION ============
 
