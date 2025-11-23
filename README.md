@@ -11,6 +11,7 @@ A reusable Mongoose plugin that adds comprehensive timeline/audit trail tracking
 ✅ **Framework-agnostic** - Works with any Node.js/Mongoose project
 ✅ **Stripe-style metadata** - Clean, structured event metadata
 ✅ **Zero dependencies** - Only requires Mongoose
+✅ **Mongoose 9 Compatible** - Fully tested with Mongoose 9+
 
 ## Installation
 

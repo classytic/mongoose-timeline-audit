@@ -54,10 +54,10 @@
   },
   "homepage": "https://github.com/siam923/mongoose-timeline-audit#readme",
   "peerDependencies": {
-    "mongoose": "^8.0.0"
+    "mongoose": ">=8.0.0"
   },
   "devDependencies": {
-    "mongoose": "^8.19.4"
+    "mongoose": "^9.0.0"
   },
   "engines": {
     "node": ">=18.0.0"
@@ -69,7 +69,7 @@
     "version:patch": "npm version patch",
     "version:minor": "npm version minor",
     "version:major": "npm version major",
-    "publish:npm": "npm publish",
+    "publish:npm": "npm publish --access public",
     "release:patch": "npm run version:patch && npm run publish:npm",
     "release:minor": "npm run version:minor && npm run publish:npm",
     "release:major": "npm run version:major && npm run publish:npm"
