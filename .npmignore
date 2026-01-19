@@ -39,9 +39,11 @@ jsconfig.json
 node_modules/
 coverage/
 .nyc_output/
-dist/
 build/
 .npmrc
+
+# Source files (dist is published, not src)
+src/
 
 # OS files
 Thumbs.db

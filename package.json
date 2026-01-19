@@ -1,27 +1,36 @@
 {
   "name": "mongoose-timeline-audit",
-  "version": "1.0.2",
+  "version": "2.0.0",
   "description": "Mongoose plugin for comprehensive timeline and audit trail tracking with actor resolution and auto-trimming",
   "type": "module",
-  "main": "./index.js",
-  "types": "./mongoose-timeline-audit.d.ts",
+  "sideEffects": false,
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "types": "./mongoose-timeline-audit.d.ts",
-      "import": "./index.js"
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
     },
-    "./plugin": "./src/plugin.js",
-    "./config": "./src/config.js",
-    "./event-types": "./src/event-types.js",
-    "./context-helpers": "./src/context-helpers.js"
+    "./plugin": {
+      "types": "./dist/plugin.d.ts",
+      "import": "./dist/plugin.js"
+    },
+    "./config": {
+      "types": "./dist/config.d.ts",
+      "import": "./dist/config.js"
+    },
+    "./event-types": {
+      "types": "./dist/event-types.d.ts",
+      "import": "./dist/event-types.js"
+    },
+    "./context-helpers": {
+      "types": "./dist/context-helpers.d.ts",
+      "import": "./dist/context-helpers.js"
+    }
   },
   "files": [
-    "index.js",
-    "src/**/*.js",
-    "!src/**/*.test.js",
-    "!src/**/*.spec.js",
-    "!src/**/__tests__/**",
-    "mongoose-timeline-audit.d.ts",
+    "dist",
     "README.md",
     "LICENSE"
   ],
@@ -43,7 +52,7 @@
     "typescript",
     "nodejs"
   ],
-  "author": "Sadman Chowdhury",
+  "author": "Sadman Chowdhury (https://github.com/siam923)",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -54,24 +63,28 @@
   },
   "homepage": "https://github.com/siam923/mongoose-timeline-audit#readme",
   "peerDependencies": {
-    "mongoose": ">=8.0.0"
+    "mongoose": "^8.0.0 || ^9.0.0"
   },
   "devDependencies": {
-    "mongoose": "^9.0.0"
+    "@types/node": "^22.0.0",
+    "mongodb-memory-server": "^10.2.3",
+    "mongoose": "^9.1.3",
+    "tsup": "^8.0.0",
+    "typescript": "^5.7.0",
+    "vitest": "^3.0.0"
   },
   "engines": {
     "node": ">=18.0.0"
   },
   "scripts": {
-    "test": "node --test test/*.test.js",
-    "test:watch": "node --test --watch test/*.test.js",
-    "prepublishOnly": "npm test && npm pack --dry-run",
-    "version:patch": "npm version patch",
-    "version:minor": "npm version minor",
-    "version:major": "npm version major",
-    "publish:npm": "npm publish --access public",
-    "release:patch": "npm run version:patch && npm run publish:npm",
-    "release:minor": "npm run version:minor && npm run publish:npm",
-    "release:major": "npm run version:major && npm run publish:npm"
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run build && npm run typecheck",
+    "release:patch": "npm version patch && npm run build && npm publish --access public",
+    "release:minor": "npm version minor && npm run build && npm publish --access public",
+    "release:major": "npm version major && npm run build && npm publish --access public"
   }
 }

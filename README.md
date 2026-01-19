@@ -11,7 +11,8 @@ A reusable Mongoose plugin that adds comprehensive timeline/audit trail tracking
 ✅ **Framework-agnostic** - Works with any Node.js/Mongoose project
 ✅ **Stripe-style metadata** - Clean, structured event metadata
 ✅ **Zero dependencies** - Only requires Mongoose
-✅ **Mongoose 9 Compatible** - Fully tested with Mongoose 9+
+✅ **Mongoose 8 & 9 Compatible** - Fully tested with Mongoose 8+ and 9+
+✅ **TypeScript First** - Written in TypeScript with full type definitions included
 
 ## Installation
 
@@ -25,7 +26,7 @@ import timelineAuditPlugin from 'mongoose-timeline-audit';
 
 ## Basic Usage
 
-```javascript
+```typescript
 import mongoose from 'mongoose';
 import timelineAuditPlugin from 'mongoose-timeline-audit';
 
@@ -45,6 +46,29 @@ orderSchema.plugin(timelineAuditPlugin, {
 });
 
 const Order = mongoose.model('Order', orderSchema);
+```
+
+### TypeScript Support
+
+The package is written in TypeScript and exports all types:
+
+```typescript
+import timelineAuditPlugin, {
+  type TimelinePluginOptions,
+  type TimelineEvent,
+  type ActorInfo,
+  type ActorRole,
+} from 'mongoose-timeline-audit';
+
+// Full type safety for plugin options
+const options: TimelinePluginOptions = {
+  ownerField: 'customerId',
+  eventLimits: {
+    'order.cancelled': 5,
+  },
+};
+
+orderSchema.plugin(timelineAuditPlugin, options);
 ```
 
 ## Plugin Configuration

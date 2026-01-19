@@ -7,14 +7,24 @@
  * @module mongoose-timeline-audit/context-helpers
  */
 
+import type {
+  TimelineRequest,
+  TimelineContext,
+  GeoContext,
+  DeviceContext,
+  SecurityContextOptions,
+} from './types.js';
+
 /**
- * Build basic context from request (optional helper)
- * Only use when you actually need IP/user-agent tracking
+ * Build basic context from request
  *
- * @param {Object} request - Request object
- * @returns {Object} Context object
+ * Only use when you need IP/user-agent tracking.
+ *
+ * @param request - Request object
+ * @returns Context object with IP and user agent
  *
  * @example
+ * ```typescript
  * import { buildRequestContext } from 'mongoose-timeline-audit';
  *
  * order.addTimelineEvent(
@@ -22,27 +32,38 @@
  *   'Order cancelled',
  *   req,
  *   { reason: 'fraud' },
- *   buildRequestContext(req)  // Optional context
+ *   buildRequestContext(req)
  * );
+ * ```
  */
-export function buildRequestContext(request) {
+export function buildRequestContext(request: TimelineRequest | null): TimelineContext | null {
   if (!request) return null;
 
+  const forwardedFor = request.headers?.['x-forwarded-for'];
+  const ip =
+    request.ip ??
+    (Array.isArray(forwardedFor) ? forwardedFor[0] : forwardedFor) ??
+    request.connection?.remoteAddress;
+
+  const userAgent = request.headers?.['user-agent'];
+
   return {
-    ip: request.ip || request.headers?.['x-forwarded-for'] || request.connection?.remoteAddress,
-    userAgent: request.headers?.['user-agent'],
+    ip,
+    userAgent: Array.isArray(userAgent) ? userAgent[0] : userAgent,
   };
 }
 
 /**
  * Build context with geo-location
- * Use when you need geo-tracking (security, compliance)
  *
- * @param {Object} request - Request object
- * @param {Object} geo - Geo-location data { country, city, lat, lon }
- * @returns {Object} Context object
+ * Use when you need geo-tracking (security, compliance).
+ *
+ * @param request - Request object
+ * @param geo - Geo-location data
+ * @returns Context object with IP, user agent, and geo
  *
  * @example
+ * ```typescript
  * import { buildGeoContext } from 'mongoose-timeline-audit';
  *
  * const geo = await getGeoFromIP(req.ip);
@@ -54,9 +75,13 @@ export function buildRequestContext(request) {
  *   {},
  *   buildGeoContext(req, geo)
  * );
+ * ```
  */
-export function buildGeoContext(request, geo = null) {
-  const context = buildRequestContext(request) || {};
+export function buildGeoContext(
+  request: TimelineRequest | null,
+  geo: GeoContext | null = null
+): TimelineContext {
+  const context = buildRequestContext(request) ?? {};
 
   if (geo) {
     context.geo = {
@@ -72,13 +97,15 @@ export function buildGeoContext(request, geo = null) {
 
 /**
  * Build context with device information
- * Use for security tracking (like Apple/Google "new device login")
  *
- * @param {Object} request - Request object
- * @param {Object} device - Device data { type, os, browser, fingerprint }
- * @returns {Object} Context object
+ * Use for security tracking (like "new device login" alerts).
+ *
+ * @param request - Request object
+ * @param device - Device data
+ * @returns Context object with IP, user agent, and device info
  *
  * @example
+ * ```typescript
  * import { buildDeviceContext } from 'mongoose-timeline-audit';
  *
  * const device = parseUserAgent(req.headers['user-agent']);
@@ -90,16 +117,20 @@ export function buildGeoContext(request, geo = null) {
  *   {},
  *   buildDeviceContext(req, device)
  * );
+ * ```
  */
-export function buildDeviceContext(request, device = null) {
-  const context = buildRequestContext(request) || {};
+export function buildDeviceContext(
+  request: TimelineRequest | null,
+  device: DeviceContext | null = null
+): TimelineContext {
+  const context = buildRequestContext(request) ?? {};
 
   if (device) {
     context.device = {
-      type: device.type,        // 'mobile', 'desktop', 'tablet'
-      os: device.os,            // 'iOS', 'Android', 'Windows', 'macOS'
-      browser: device.browser,  // 'Chrome', 'Safari', 'Firefox'
-      fingerprint: device.fingerprint,  // Device fingerprint hash
+      type: device.type,
+      os: device.os,
+      browser: device.browser,
+      fingerprint: device.fingerprint,
     };
   }
 
@@ -108,17 +139,15 @@ export function buildDeviceContext(request, device = null) {
 
 /**
  * Build comprehensive security context
- * Use for high-security events (auth, payments, sensitive operations)
  *
- * @param {Object} request - Request object
- * @param {Object} options - Additional options
- * @param {Object} options.geo - Geo-location data
- * @param {Object} options.device - Device data
- * @param {string} options.sessionId - Session ID
- * @param {string} options.requestId - Request ID
- * @returns {Object} Context object
+ * Use for high-security events (auth, payments, sensitive operations).
+ *
+ * @param request - Request object
+ * @param options - Additional security options
+ * @returns Complete security context
  *
  * @example
+ * ```typescript
  * import { buildSecurityContext } from 'mongoose-timeline-audit';
  *
  * const context = buildSecurityContext(req, {
@@ -129,16 +158,20 @@ export function buildDeviceContext(request, device = null) {
  * });
  *
  * user.addTimelineEvent('auth.password.changed', 'Password changed', req, {}, context);
+ * ```
  */
-export function buildSecurityContext(request, options = {}) {
-  const context = buildRequestContext(request) || {};
+export function buildSecurityContext(
+  request: TimelineRequest | null,
+  options: SecurityContextOptions = {}
+): TimelineContext {
+  const context = buildRequestContext(request) ?? {};
 
   if (options.geo) {
     context.geo = {
       country: options.geo.country,
       city: options.geo.city,
       lat: options.geo.lat,
-      lon: options.lon,
+      lon: options.geo.lon,
     };
   }
 
@@ -164,12 +197,14 @@ export function buildSecurityContext(request, options = {}) {
 
 /**
  * Build custom context
- * Maximum flexibility - store anything you want
  *
- * @param {Object} data - Any data you want to store
- * @returns {Object} Context object
+ * Maximum flexibility - store anything you want.
+ *
+ * @param data - Any data you want to store
+ * @returns Context object (or null if no data)
  *
  * @example
+ * ```typescript
  * import { buildCustomContext } from 'mongoose-timeline-audit';
  *
  * const context = buildCustomContext({
@@ -178,11 +213,11 @@ export function buildSecurityContext(request, options = {}) {
  *   platform: 'iOS',
  *   referrer: 'push-notification',
  *   campaignId: 'summer-sale-2025',
- *   customField: 'any-value',
  * });
  *
  * order.addTimelineEvent('order.created', 'Order created', req, {}, context);
+ * ```
  */
-export function buildCustomContext(data) {
-  return data || null;
+export function buildCustomContext<T extends TimelineContext>(data: T | null): T | null {
+  return data ?? null;
 }

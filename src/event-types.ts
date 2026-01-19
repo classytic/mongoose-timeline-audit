@@ -2,15 +2,18 @@
  * Pre-built Event Types
  *
  * Common event types categorized by domain.
- * These are ready-to-use constants for beginners.
+ * These are ready-to-use constants for type-safe event tracking.
  *
  * @module mongoose-timeline-audit/event-types
  */
 
-/**
- * Authentication & Security Events
- * Use these for user authentication, security, and access control
- */
+import type { EventLimits } from './types.js';
+
+// ============================================================================
+// Authentication & Security Events
+// ============================================================================
+
+/** Authentication and security event types */
 export const AUTH_EVENTS = {
   LOGIN_SUCCESS: 'auth.login.success',
   LOGIN_FAILED: 'auth.login.failed',
@@ -22,29 +25,36 @@ export const AUTH_EVENTS = {
   TWO_FACTOR_DISABLED: 'auth.2fa.disabled',
   SESSION_EXPIRED: 'auth.session.expired',
   TOKEN_REFRESHED: 'auth.token.refreshed',
-};
+} as const;
 
-/**
- * User Management Events
- * Use these for user account lifecycle
- */
+export type AuthEvent = (typeof AUTH_EVENTS)[keyof typeof AUTH_EVENTS];
+
+// ============================================================================
+// User Management Events
+// ============================================================================
+
+/** User account lifecycle event types */
 export const USER_EVENTS = {
+  REGISTERED: 'user.registered',
   CREATED: 'user.created',
   UPDATED: 'user.updated',
   DELETED: 'user.deleted',
   ACTIVATED: 'user.activated',
   DEACTIVATED: 'user.deactivated',
   SUSPENDED: 'user.suspended',
-  ROLE_CHANGED: 'user.role.changed',
-  PROFILE_UPDATED: 'user.profile.updated',
-  EMAIL_VERIFIED: 'user.email.verified',
-  PHONE_VERIFIED: 'user.phone.verified',
-};
+  ROLE_CHANGED: 'user.role_changed',
+  PROFILE_UPDATED: 'user.profile_updated',
+  EMAIL_VERIFIED: 'user.email_verified',
+  PHONE_VERIFIED: 'user.phone_verified',
+} as const;
 
-/**
- * Access Control Events
- * Use these for permissions and authorization
- */
+export type UserEvent = (typeof USER_EVENTS)[keyof typeof USER_EVENTS];
+
+// ============================================================================
+// Access Control Events
+// ============================================================================
+
+/** Permission and authorization event types */
 export const ACCESS_EVENTS = {
   GRANTED: 'access.granted',
   REVOKED: 'access.revoked',
@@ -52,12 +62,15 @@ export const ACCESS_EVENTS = {
   PERMISSION_REMOVED: 'access.permission.removed',
   ROLE_ASSIGNED: 'access.role.assigned',
   ROLE_REMOVED: 'access.role.removed',
-};
+} as const;
 
-/**
- * Data Events
- * Use these for CRUD operations on data
- */
+export type AccessEvent = (typeof ACCESS_EVENTS)[keyof typeof ACCESS_EVENTS];
+
+// ============================================================================
+// Data Events
+// ============================================================================
+
+/** CRUD operation event types */
 export const DATA_EVENTS = {
   CREATED: 'data.created',
   UPDATED: 'data.updated',
@@ -68,12 +81,15 @@ export const DATA_EVENTS = {
   IMPORTED: 'data.imported',
   BULK_UPDATED: 'data.bulk_updated',
   BULK_DELETED: 'data.bulk_deleted',
-};
+} as const;
 
-/**
- * Payment & Transaction Events
- * Use these for financial operations
- */
+export type DataEvent = (typeof DATA_EVENTS)[keyof typeof DATA_EVENTS];
+
+// ============================================================================
+// Payment & Transaction Events
+// ============================================================================
+
+/** Financial operation event types */
 export const PAYMENT_EVENTS = {
   INITIATED: 'payment.initiated',
   COMPLETED: 'payment.completed',
@@ -82,12 +98,15 @@ export const PAYMENT_EVENTS = {
   PARTIALLY_REFUNDED: 'payment.partially_refunded',
   DISPUTED: 'payment.disputed',
   VERIFIED: 'payment.verified',
-};
+} as const;
 
-/**
- * Subscription Events
- * Use these for subscription lifecycle
- */
+export type PaymentEvent = (typeof PAYMENT_EVENTS)[keyof typeof PAYMENT_EVENTS];
+
+// ============================================================================
+// Subscription Events
+// ============================================================================
+
+/** Subscription lifecycle event types */
 export const SUBSCRIPTION_EVENTS = {
   CREATED: 'subscription.created',
   ACTIVATED: 'subscription.activated',
@@ -99,12 +118,15 @@ export const SUBSCRIPTION_EVENTS = {
   UPGRADED: 'subscription.upgraded',
   DOWNGRADED: 'subscription.downgraded',
   RENEWAL_FAILED: 'subscription.renewal_failed',
-};
+} as const;
 
-/**
- * Order Events
- * Use these for order/purchase lifecycle
- */
+export type SubscriptionEvent = (typeof SUBSCRIPTION_EVENTS)[keyof typeof SUBSCRIPTION_EVENTS];
+
+// ============================================================================
+// Order Events
+// ============================================================================
+
+/** Order/purchase lifecycle event types */
 export const ORDER_EVENTS = {
   CREATED: 'order.created',
   UPDATED: 'order.updated',
@@ -113,16 +135,23 @@ export const ORDER_EVENTS = {
   SHIPPED: 'order.shipped',
   DELIVERED: 'order.delivered',
   CANCELLED: 'order.cancelled',
+  COMPLETED: 'order.completed',
   REFUNDED: 'order.refunded',
   FULFILLED: 'order.fulfilled',
   PAUSED: 'order.paused',
   RESUMED: 'order.resumed',
-};
+  STATUS_CHANGED: 'order.status_changed',
+  PAYMENT_RECEIVED: 'order.payment_received',
+  PAYMENT_FAILED: 'order.payment_failed',
+} as const;
 
-/**
- * Enrollment/Course Events
- * Use these for course/enrollment tracking
- */
+export type OrderEvent = (typeof ORDER_EVENTS)[keyof typeof ORDER_EVENTS];
+
+// ============================================================================
+// Enrollment/Course Events
+// ============================================================================
+
+/** Course/enrollment tracking event types */
 export const ENROLLMENT_EVENTS = {
   CREATED: 'enrollment.created',
   STARTED: 'enrollment.started',
@@ -133,12 +162,15 @@ export const ENROLLMENT_EVENTS = {
   LESSON_COMPLETED: 'enrollment.lesson.completed',
   QUIZ_COMPLETED: 'enrollment.quiz.completed',
   CERTIFICATE_ISSUED: 'enrollment.certificate.issued',
-};
+} as const;
 
-/**
- * Admin Actions
- * Use these for administrative operations
- */
+export type EnrollmentEvent = (typeof ENROLLMENT_EVENTS)[keyof typeof ENROLLMENT_EVENTS];
+
+// ============================================================================
+// Admin Events
+// ============================================================================
+
+/** Administrative operation event types */
 export const ADMIN_EVENTS = {
   CONFIG_CHANGED: 'admin.config.changed',
   FEATURE_ENABLED: 'admin.feature.enabled',
@@ -148,27 +180,36 @@ export const ADMIN_EVENTS = {
   BACKUP_CREATED: 'admin.backup.created',
   BACKUP_RESTORED: 'admin.backup.restored',
   USER_IMPERSONATED: 'admin.user.impersonated',
-};
+} as const;
 
-/**
- * System Events
- * Use these for system-level operations
- */
+export type AdminEvent = (typeof ADMIN_EVENTS)[keyof typeof ADMIN_EVENTS];
+
+// ============================================================================
+// System Events
+// ============================================================================
+
+/** System-level operation event types */
 export const SYSTEM_EVENTS = {
-  CRON_EXECUTED: 'system.cron.executed',
-  JOB_STARTED: 'system.job.started',
-  JOB_COMPLETED: 'system.job.completed',
-  JOB_FAILED: 'system.job.failed',
-  EMAIL_SENT: 'system.email.sent',
-  SMS_SENT: 'system.sms.sent',
-  NOTIFICATION_SENT: 'system.notification.sent',
-  WEBHOOK_TRIGGERED: 'system.webhook.triggered',
-};
+  MAINTENANCE_START: 'system.maintenance_start',
+  MAINTENANCE_END: 'system.maintenance_end',
+  DATA_MIGRATED: 'system.data_migrated',
+  CRON_EXECUTED: 'system.cron_executed',
+  JOB_STARTED: 'system.job_started',
+  JOB_COMPLETED: 'system.job_completed',
+  JOB_FAILED: 'system.job_failed',
+  EMAIL_SENT: 'system.email_sent',
+  SMS_SENT: 'system.sms_sent',
+  NOTIFICATION_SENT: 'system.notification_sent',
+  WEBHOOK_TRIGGERED: 'system.webhook_triggered',
+} as const;
 
-/**
- * All events combined
- * Useful for validation or autocomplete
- */
+export type SystemEvent = (typeof SYSTEM_EVENTS)[keyof typeof SYSTEM_EVENTS];
+
+// ============================================================================
+// Combined Types
+// ============================================================================
+
+/** All event types combined */
 export const ALL_EVENTS = {
   ...AUTH_EVENTS,
   ...USER_EVENTS,
@@ -180,13 +221,37 @@ export const ALL_EVENTS = {
   ...ENROLLMENT_EVENTS,
   ...ADMIN_EVENTS,
   ...SYSTEM_EVENTS,
-};
+} as const;
+
+/** Union type of all event strings */
+export type AnyEvent =
+  | AuthEvent
+  | UserEvent
+  | AccessEvent
+  | DataEvent
+  | PaymentEvent
+  | SubscriptionEvent
+  | OrderEvent
+  | EnrollmentEvent
+  | AdminEvent
+  | SystemEvent;
+
+// ============================================================================
+// Suggested Event Limits
+// ============================================================================
 
 /**
  * Get suggested event limits for different event categories
- * @returns {Object} Suggested event limits
+ *
+ * @returns Recommended event retention limits
+ *
+ * @example
+ * ```typescript
+ * const limits = getSuggestedEventLimits();
+ * orderSchema.plugin(timelineAuditPlugin, { eventLimits: limits });
+ * ```
  */
-export function getSuggestedEventLimits() {
+export function getSuggestedEventLimits(): EventLimits {
   return {
     // Authentication events - keep limited recent history
     [AUTH_EVENTS.LOGIN_SUCCESS]: 20,
